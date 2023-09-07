@@ -3,8 +3,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 const {Pool} = pg
-console.log('aqui é o pool que eu queria testar')
-console.log(Pool)
 
 const configDatabase = {
     connectionString: process.env.DATABASE_URL
