@@ -1,7 +1,6 @@
 import { passsengersServices } from "../services/passengers.services.js"
 
 export const createPassenger = async(req, res)=>{
-    console.log(req.body)
     try {
         const result =  await passsengersServices.createPassenger(req.body)
         console.log('voltei pro controller', result)
