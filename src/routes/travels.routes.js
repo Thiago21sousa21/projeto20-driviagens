@@ -4,6 +4,6 @@ import { travelSchema } from '../schemas/schemas.js'
 
 const travelsRoutes = Router()
 
-travelsRoutes.post('/travels', schemaValidation(travelSchema), FUNC CONTROLLER TRAVEL)
+travelsRoutes.post('/travels', schemaValidation(travelSchema))
 
 export default travelsRoutes
