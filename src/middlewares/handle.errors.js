@@ -10,10 +10,6 @@ const handleErrors = (error, req, res, next)=>{
         return res.status(httpStatus.NOT_FOUND).send(error.message)
     }
 
-    if(error.type === 'incompleteData'){
-        return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message)
-    }
-
     if(error.type === 'invalid'){
         return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message)
     }
