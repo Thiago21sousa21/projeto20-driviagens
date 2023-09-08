@@ -1,14 +1,21 @@
 import { db } from "../database.connection/database.connection.js"
 
-const checkExistence = async(citiesId)=>{
-    const {origin, destination} = citiesId
+const checkOriginExistence = async(origin)=>{   
     const result = await db.query(`
-        SELECT id FROM cities WHERE id IN ($1, $2);
-    `, [origin, destination])
+        SELECT 1 FROM cities WHERE id = $1;
+    `, [origin])
+    return result.rowCount
+}
+
+const checkDestinationExistence = async(destination)=>{
+    const result = await db.query(`
+        SELECT 1 FROM cities WHERE id = $1;
+    `, [destination])
     return result.rowCount
 }
 
 const insertFlight = async(body)=>{
+    console.log(body)
     const {origin, destination, date} = body
 
     const result =  await db.query(`
@@ -19,6 +26,7 @@ const insertFlight = async(body)=>{
 
 
 export const flightsRepository = {
-    checkExistence,
+    checkOriginExistence,
+    checkDestinationExistence,
     insertFlight
 }

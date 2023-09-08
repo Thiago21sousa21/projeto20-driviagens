@@ -1,7 +1,17 @@
 import { passengerRepository } from "../repositories/passengers.repositories.js"
-const createPassenger = (passenger)=>{
-    return passengerRepository.create(passenger)
+import errorsList from "../utils/errorsList.js"
+
+
+
+
+const createPassenger = async(passenger)=>{
+    const result = await passengerRepository.create(passenger)
+    //console.log(result)
+    if(!result>0)throw errorsList
 }
+
+
+
 
 export const passsengersServices = {
     createPassenger

@@ -6,7 +6,7 @@ export const newFlight = async(req, res)=>{
     //verificar se as cidades existem
     await flightsServices.checkExistence(req.body);
     //verificar se a origem e o destino são iguais
-    verifyIfOriginAndDestinationAreSame(req.body);
+    flightsServices.verifyIfOriginAndDestinationAreSame(req.body);
     //verificar se a data é maior
     flightsServices.checkDate(req.body.date);
     //inserir novo voo
