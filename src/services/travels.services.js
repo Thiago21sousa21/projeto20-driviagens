@@ -9,7 +9,13 @@ const checkExistence = async(b)=>{
     if(!passenger>0)throw errorsList.notFound('passenger');
 }
 
+const insertNewTravel = async(b)=>{
+    const result = await travelsRepositories.insertNewTravel(b)
+    if(!result>0)throw errorsList.internal
+}
+
 
 export const travelsServices = {
-    checkExistence
+    checkExistence,
+    insertNewTravel
 }

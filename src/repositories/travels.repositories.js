@@ -14,7 +14,15 @@ const checkPassengerExistence = async(passengerId)=>{
     return result.rowCount
 }
 
+const insertNewTravel = async(b)=>{
+    const result = await db.query(`
+        INSERT INTO travels ("passengerId", "flightId") VALUES ($1, $2);
+    `,[b.passengerId, b.flightId]);
+    return result.rowCount
+}
+
 export const travelsRepositories = {
     checkFlightExistence,
-    checkPassengerExistence
+    checkPassengerExistence,
+    insertNewTravel
 }
