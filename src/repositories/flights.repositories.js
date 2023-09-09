@@ -24,9 +24,24 @@ const insertFlight = async(body)=>{
     return result.rowCount
 }
 
+const  getFlights = async(comand)=>{
+    const flights = await db.query(`
+        SELECT
+            f.id AS "id",
+            orig.name AS "origin",
+            dest.name AS "destination",
+            TO_CHAR(f."date", 'DD-MM-YYYY') AS "date"
+        FROM flights AS f
+        JOIN cities AS orig ON f.origin = orig.id
+        JOIN cities AS dest ON f.destination = dest.id;
+    `);
+    return flights.rows
+}
+
 
 export const flightsRepository = {
     checkOriginExistence,
     checkDestinationExistence,
-    insertFlight
+    insertFlight,
+    getFlights
 }

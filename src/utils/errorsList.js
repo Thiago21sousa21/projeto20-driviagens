@@ -1,11 +1,7 @@
 import httpStatus from "http-status";
 
 const errorsList = {
-    // name:{
-    //     type: '', 
-    //     message:'' , 
-    //     status: httpStatus
-    // }
+   
 
     conflict:{
         type: 'conflict',
@@ -44,3 +40,9 @@ const errorsList = {
 
 }
 export default errorsList;
+
+ // name:{
+    //     type: '', 
+    //     message:'' , 
+    //     status: httpStatus
+    // }

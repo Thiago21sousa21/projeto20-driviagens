@@ -20,3 +20,7 @@ export const travelSchema = Joi.object({
 	flightId: Joi.number().integer().required()
 })
 
+export const datesSchema = Joi.object({
+	smallerDate: Joi.string().pattern(/^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/).required(),
+	biggerDate: Joi.string().pattern(/^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/).required()
+})
