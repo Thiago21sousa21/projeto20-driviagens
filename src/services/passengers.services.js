@@ -10,9 +10,19 @@ const createPassenger = async(passenger)=>{
     if(!result>0)throw errorsList
 }
 
-
+const getPassengersAndTravels =  async(query)=>{
+    let sqlString = '';
+    const { name } = query;
+    
+    if(name)sqlString += ` WHERE passengers."firstName" || ' ' || passengers."lastName" ILIKE '%${name}%'`;
+    
+    const result = await passengerRepository.getPassengersAndTravels(sqlString)
+    if(result.length > 10)throw errorsList.manyItems
+    return result;
+}
 
 
 export const passsengersServices = {
-    createPassenger
+    createPassenger,
+    getPassengersAndTravels
 }

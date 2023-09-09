@@ -36,6 +36,11 @@ const errorsList = {
             type: 'invalidDate',
             message: 'the flight date needs to be greater than the current date',
             status: httpStatus.UNPROCESSABLE_ENTITY
+    },
+    manyItems:{
+            type: 'manyItems', 
+            message:'Too many results' , 
+            status: httpStatus.INTERNAL_SERVER_ERROR
     }
 
 }

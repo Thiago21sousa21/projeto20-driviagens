@@ -7,4 +7,5 @@ const travelsRoutes = Router()
 
 travelsRoutes.post('/travels', schemaValidation(travelSchema), travelControllers.insertNewTravel)
 
+
 export default travelsRoutes

@@ -8,6 +8,22 @@ const create = async(passenger)=>{
     return result.rowCount;
 }
 
+const getPassengersAndTravels =  async(sql = '')=>{
+    const result = await db.query(`
+    
+        SELECT passengers."firstName" || ' ' || passengers."lastName" AS passenger, COUNT(travels.id) AS travels
+        FROM passengers
+        LEFT JOIN travels ON passengers.id = travels."passengerId"
+        ${sql}
+        GROUP BY passenger ORDER BY travels DESC LIMIT 10;
+    
+    `);
+
+    return result.rows;
+
+}
+
 export const passengerRepository = {
-    create
+    create,
+    getPassengersAndTravels
 }

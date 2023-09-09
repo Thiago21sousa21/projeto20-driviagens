@@ -7,3 +7,8 @@ export const createPassenger = async(req, res)=>{
     res.sendStatus(httpStatus.CREATED)
 
 }
+
+export const getPassengersAndTravels =  async(req, res)=>{
+    const passengerTravel = await passsengersServices.getPassengersAndTravels(req.query)
+    return res.send(passengerTravel);
+}
