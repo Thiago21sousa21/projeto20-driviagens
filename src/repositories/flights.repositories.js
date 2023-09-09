@@ -24,7 +24,9 @@ const insertFlight = async(body)=>{
     return result.rowCount
 }
 
-const  getFlights = async(comand)=>{
+const  getFlights = async(comand, constraints)=>{
+    console.log(comand)
+    console.log(constraints)
     const flights = await db.query(`
         SELECT
             f.id AS "id",
@@ -33,8 +35,10 @@ const  getFlights = async(comand)=>{
             TO_CHAR(f."date", 'DD-MM-YYYY') AS "date"
         FROM flights AS f
         JOIN cities AS orig ON f.origin = orig.id
-        JOIN cities AS dest ON f.destination = dest.id;
-    `);
+        JOIN cities AS dest ON f.destination = dest.id${comand} ORDER BY f."date";
+        
+    `,constraints);
+    console.log(flights.rows)
     return flights.rows
 }
 

@@ -16,7 +16,8 @@ const newFlight = async(req, res)=>{
 
 const  getFlights = async(req, res)=>{
     
-    await flightsServices.getFlights(req.query)
+    const flights = await flightsServices.getFlights(req.query)
+    return res.send(flights)
 }
 
 export const flightsControllers = {

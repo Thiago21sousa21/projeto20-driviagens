@@ -29,45 +29,57 @@ const verifyIfOriginAndDestinationAreSame = (body)=>{
     if(body.origin === body.destination)throw errorsList.equalCities
 }
 
-const validateAndCompareDates = (smallerDate, biggerDate, constraints)=>{
+const validateAndCompareDates = (smallerDate, biggerDate, constraints, justDate)=>{
+    //se não tem data não prossegue
     if(!smallerDate && !biggerDate)return '';
+    //se tem data verificar se estão no forma to e se estão as duas
     const dates = {smallerDate, biggerDate}
     const validation = datesSchema.validate(dates , {abortEarly: false});
     if ( validation.error){
         const errors = validation.error.details.map(detail => detail.message);
         throw errorsList.schema(errors);
     }  
-
+    //converter para um tipo data e verificar se a menor é maior
     let parseSmallerDate = dayjs(smallerDate, 'DD-MM-YYYY')
     let parseBiggerDate = dayjs(biggerDate, 'DD-MM-YYYY')
-    if(parseSmallerDate.isAfter(parseBiggerDate))throw 'data de origem não pode ser maior que a data '
-
+    if(parseSmallerDate.isAfter(parseBiggerDate))throw errorsList.invalidDate
+    //converter de volta para string no formado do banco
     parseSmallerDate = parseSmallerDate.format('YYYY-MM-DD')
     parseBiggerDate = parseBiggerDate.format('YYYY-MM-DD')
-
-    return ` AND date >= $${constraints+1} AND date <= $${constraints+2}`
+    //adicionar ao array
+    constraints.push(parseSmallerDate)
+    constraints.push(parseBiggerDate)
+    //verificar se é somente a data e retonar a string
+    if(justDate) return ` f."date" BETWEEN $${constraints.length-1} AND $${constraints.length}`;
+    return ` AND f."date" BETWEEN $${constraints.length-1} AND $${constraints.length}`
 }
 
 const  getFlights = async(query)=>{
+    let justDate = true;
     let comand = '';
-    let constraints = 0;
+    let constraints = [];
     const {origin, destination} = query;
     const smallerDate = query['smaller-date']
     const biggerDate = query['bigger-date']
     if( origin || destination || smallerDate || biggerDate)comand+=' WHERE'
     if(origin && destination){
-        constraints = constraints+2
-        comand+=` origin = $${constraints -1} AND destination = $${constraints}`
+        justDate = false;
+        constraints.push(origin)
+        constraints.push(destination)
+        comand+=` orig.name = $${constraints.length-1} AND dest.name = $${constraints.length}`
     }else if(destination && !origin){
-        constraints++
-        comand+=` destination = $${constraints}`
+        justDate = false;
+        constraints.push(destination)
+        comand+=` dest.name = $${constraints.length}`
     }else if(origin && !destination){
-        constraints++
-        comand+=` origin = $${origin}`
+        justDate = false;
+        constraints.push(origin)
+        comand+=` orig.name = $${constraints.length}`
     }
-    comand+= validateAndCompareDates(smallerDate, biggerDate, constraints);
+    comand+= validateAndCompareDates(smallerDate, biggerDate, constraints, justDate);
 
-    await flightsRepository.getFlights(comand)
+    const flights = await flightsRepository.getFlights(comand, constraints)
+    return flights;
 }
 
 
